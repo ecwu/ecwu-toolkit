@@ -126,6 +126,47 @@ export default function YourToolPage() {
 - Use `flex flex-1 flex-col gap-4 p-4` for consistent spacing
 - This ensures proper layout within the sidebar/navbar structure
 
+## Layout Preferences
+
+### Tool Layout Design
+
+**Preferred Layout Style**: Clean, card-free design without heavy wrapper components
+
+- **Avoid**: Card wrappers (`<Card>`, `<CardHeader>`, `<CardContent>`) for main tool containers
+- **Use instead**: Simple div containers with clean typography
+- **Header pattern**: 
+  ```tsx
+  <div className="space-y-2">
+    <h1 className="text-2xl font-bold">Tool Name</h1>
+    <p className="text-muted-foreground">Tool description...</p>
+  </div>
+  ```
+
+### Adaptive Grid Layouts
+
+For tools with multiple components, use adaptive grid layouts:
+
+- **Small screens**: Single column (stacked layout)
+- **Large screens**: Multi-column layout using CSS Grid
+- **Breakpoint**: Use `lg:grid-cols-{n}` for responsive behavior
+- **Components**: Group related functionality into distinct grid areas
+
+**Example Structure**:
+```tsx
+<div className="grid gap-4 lg:grid-cols-3">
+  <div className="lg:col-span-1">{/* Component 1 */}</div>
+  <div className="lg:col-span-1">{/* Component 2 */}</div>
+  <div className="lg:col-span-1">{/* Component 3 */}</div>
+</div>
+```
+
+### Visual Design Principles
+
+- **Minimal containers**: Avoid unnecessary visual boundaries
+- **Clean spacing**: Use consistent gap and padding classes
+- **Direct layouts**: Let content flow naturally without heavy framing
+- **Responsive first**: Design for mobile, enhance for desktop
+
 ## Search Functionality
 
 - Implemented in `components/search-form.tsx`
