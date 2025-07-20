@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Copy, Save, Trash2, Download, Upload } from "lucide-react";
 import { toast } from "sonner";
@@ -29,13 +29,20 @@ export default function TemplatePage() {
     {
       id: "1",
       name: "Email Template",
-      content: "Hi {{name}},\n\nI hope this email finds you well. I wanted to reach out regarding {{subject}}.\n\n{{body}}\n\nBest regards,\n{{sender}}"
-    }
+      content:
+        "Hi {{name}},\n\nI hope this email finds you well. I wanted to reach out regarding {{subject}}.\n\n{{body}}\n\nBest regards,\n{{sender}}",
+    },
   ]);
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(templates[0]);
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
+    templates[0]
+  );
   const [templateName, setTemplateName] = useState("");
-  const [templateContent, setTemplateContent] = useState(templates[0]?.content || "");
-  const [variableValues, setVariableValues] = useState<Record<string, string>>({});
+  const [templateContent, setTemplateContent] = useState(
+    templates[0]?.content || ""
+  );
+  const [variableValues, setVariableValues] = useState<Record<string, string>>(
+    {}
+  );
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [importModalOpen, setImportModalOpen] = useState(false);
   const [importText, setImportText] = useState("");
@@ -43,7 +50,7 @@ export default function TemplatePage() {
   // Extract variables from template content
   const variables = useMemo(() => {
     const regex = /\{\{(\w+)\}\}/g;
-    const matches = [];
+    const matches: string[] = [];
     let match;
     while ((match = regex.exec(templateContent)) !== null) {
       if (!matches.includes(match[1])) {
@@ -56,9 +63,12 @@ export default function TemplatePage() {
   // Generate output with variable substitution
   const generatedOutput = useMemo(() => {
     let output = templateContent;
-    variables.forEach(variable => {
+    variables.forEach((variable) => {
       const value = variableValues[variable] || `{{${variable}}}`;
-      output = output.replace(new RegExp(`\\{\\{${variable}\\}\\}`, 'g'), value);
+      output = output.replace(
+        new RegExp(`\\{\\{${variable}\\}\\}`, "g"),
+        value
+      );
     });
     return output;
   }, [templateContent, variableValues, variables]);
@@ -68,20 +78,20 @@ export default function TemplatePage() {
       toast.error("Please enter a template name");
       return;
     }
-    
+
     const newTemplate: Template = {
       id: Date.now().toString(),
       name: templateName,
-      content: templateContent
+      content: templateContent,
     };
-    
+
     setTemplates([...templates, newTemplate]);
     setTemplateName("");
     toast.success("Template saved successfully");
   };
 
   const handleDeleteTemplate = (id: string) => {
-    setTemplates(templates.filter(t => t.id !== id));
+    setTemplates(templates.filter((t) => t.id !== id));
     if (selectedTemplate?.id === id) {
       setSelectedTemplate(templates[0] || null);
       setTemplateContent(templates[0]?.content || "");
@@ -101,9 +111,9 @@ export default function TemplatePage() {
   };
 
   const handleVariableChange = (variable: string, value: string) => {
-    setVariableValues(prev => ({
+    setVariableValues((prev) => ({
       ...prev,
-      [variable]: value
+      [variable]: value,
     }));
   };
 
@@ -124,35 +134,38 @@ export default function TemplatePage() {
 
     try {
       const importedTemplates = JSON.parse(importText) as Template[];
-      
+
       // Validate the imported data
       if (!Array.isArray(importedTemplates)) {
         throw new Error("Invalid format: Expected an array of templates");
       }
-      
+
       // Check if templates have required properties
-      const validTemplates = importedTemplates.filter(t => 
-        t.id && t.name && typeof t.content === 'string'
+      const validTemplates = importedTemplates.filter(
+        (t) => t.id && t.name && typeof t.content === "string"
       );
-      
+
       if (validTemplates.length === 0) {
         throw new Error("No valid templates found in the data");
       }
-      
+
       // Merge with existing templates, avoiding duplicates
-      const existingIds = new Set(templates.map(t => t.id));
-      const newTemplates = validTemplates.filter(t => !existingIds.has(t.id));
-      
-      setTemplates(prev => [...prev, ...newTemplates]);
+      const existingIds = new Set(templates.map((t) => t.id));
+      const newTemplates = validTemplates.filter((t) => !existingIds.has(t.id));
+
+      setTemplates((prev) => [...prev, ...newTemplates]);
       toast.success(`Imported ${newTemplates.length} templates successfully`);
-      
+
       if (newTemplates.length < validTemplates.length) {
-        toast.info(`${validTemplates.length - newTemplates.length} templates were skipped (duplicates)`);
+        toast.info(
+          `${
+            validTemplates.length - newTemplates.length
+          } templates were skipped (duplicates)`
+        );
       }
-      
+
       setImportText("");
       setImportModalOpen(false);
-      
     } catch {
       toast.error("Failed to import templates. Please check the JSON format.");
     }
@@ -172,7 +185,8 @@ export default function TemplatePage() {
             <div>
               <h1 className="text-2xl font-bold">Template Tool</h1>
               <p className="text-muted-foreground">
-                Create and manage text templates with variables. Use {"{{"} and {"}}"} to wrap variable names.
+                Create and manage text templates with variables. Use {"{{"} and{" "}
+                {"}}"} to wrap variable names.
               </p>
             </div>
             <div className="flex gap-2">
@@ -187,7 +201,8 @@ export default function TemplatePage() {
                   <DialogHeader>
                     <DialogTitle>Export Templates</DialogTitle>
                     <DialogDescription>
-                      Copy the JSON below to backup your templates or share them with others.
+                      Copy the JSON below to backup your templates or share them
+                      with others.
                     </DialogDescription>
                   </DialogHeader>
                   <Textarea
@@ -225,7 +240,10 @@ export default function TemplatePage() {
                     className="h-64 font-mono text-xs"
                   />
                   <DialogFooter>
-                    <Button variant="outline" onClick={() => setImportModalOpen(false)}>
+                    <Button
+                      variant="outline"
+                      onClick={() => setImportModalOpen(false)}
+                    >
                       Cancel
                     </Button>
                     <Button onClick={handleImportTemplates}>
@@ -247,7 +265,11 @@ export default function TemplatePage() {
                 {templates.map((template) => (
                   <div key={template.id} className="flex items-center gap-2">
                     <Button
-                      variant={selectedTemplate?.id === template.id ? "default" : "outline"}
+                      variant={
+                        selectedTemplate?.id === template.id
+                          ? "default"
+                          : "outline"
+                      }
                       size="sm"
                       className="flex-1 justify-start text-left"
                       onClick={() => handleSelectTemplate(template)}
@@ -288,7 +310,8 @@ export default function TemplatePage() {
                 className="h-64 font-mono text-sm"
               />
               <div className="text-xs text-muted-foreground">
-                Variables found: {variables.length > 0 ? variables.join(", ") : "None"}
+                Variables found:{" "}
+                {variables.length > 0 ? variables.join(", ") : "None"}
               </div>
             </div>
           </div>
@@ -304,7 +327,9 @@ export default function TemplatePage() {
                     <Textarea
                       placeholder={`Enter value for ${variable}`}
                       value={variableValues[variable] || ""}
-                      onChange={(e) => handleVariableChange(variable, e.target.value)}
+                      onChange={(e) =>
+                        handleVariableChange(variable, e.target.value)
+                      }
                       className="min-h-[80px]"
                     />
                   </div>
@@ -313,7 +338,9 @@ export default function TemplatePage() {
             ) : (
               <div className="text-center text-muted-foreground py-8">
                 <p>No variables found in template</p>
-                <p className="text-xs mt-2">Add variables using {"{{"} and {"}}"} syntax</p>
+                <p className="text-xs mt-2">
+                  Add variables using {"{{"} and {"}}"} syntax
+                </p>
               </div>
             )}
           </div>
@@ -338,7 +365,8 @@ export default function TemplatePage() {
               </pre>
             </div>
             <div className="text-xs text-muted-foreground">
-              {variables.filter(v => variableValues[v]).length} of {variables.length} variables filled
+              {variables.filter((v) => variableValues[v]).length} of{" "}
+              {variables.length} variables filled
             </div>
           </div>
         </div>
