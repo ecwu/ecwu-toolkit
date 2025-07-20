@@ -105,6 +105,10 @@ const data = {
           title: "Hash Generator",
           url: "/tools/hash-generator",
         },
+        {
+          title: "Template Tool",
+          url: "/tools/template",
+        },
       ],
     },
     {
@@ -229,7 +233,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ))}
         {filteredData.navMain.length === 0 && searchQuery && (
           <div className="p-4 text-center text-muted-foreground">
-            No tools found for "{searchQuery}"
+            No tools found for &ldquo;{searchQuery}&rdquo;
           </div>
         )}
       </SidebarContent>
