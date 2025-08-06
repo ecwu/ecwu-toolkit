@@ -77,7 +77,7 @@ export default function BarcodeScannerPage() {
       setIsScanning(true);
 
       await codeReaderRef.current.decodeFromVideoDevice(
-        selectedCamera || undefined,
+        selectedCamera || null,
         videoRef.current,
         (result, error) => {
           if (result) {
@@ -130,7 +130,9 @@ export default function BarcodeScannerPage() {
 
     try {
       setError("");
-      const result = await codeReaderRef.current.decodeFromFile(file);
+      const url = URL.createObjectURL(file);
+      const result = await codeReaderRef.current.decodeFromImageUrl(url);
+      URL.revokeObjectURL(url);
       
       const scanResult: ScanResult = {
         text: result.getText(),
