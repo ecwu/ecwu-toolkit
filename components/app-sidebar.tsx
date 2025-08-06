@@ -98,6 +98,14 @@ const data = {
           url: "/tools/qr-code",
         },
         {
+          title: "QR Code Scanner",
+          url: "/tools/qr-scanner",
+        },
+        {
+          title: "Barcode Scanner",
+          url: "/tools/barcode-scanner",
+        },
+        {
           title: "Lorem Ipsum Generator",
           url: "/tools/lorem-ipsum",
         },
