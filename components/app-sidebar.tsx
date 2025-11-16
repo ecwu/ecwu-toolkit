@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useState, useMemo } from "react";
 import { ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 import { SearchForm } from "@/components/search-form";
 import {
@@ -48,6 +49,10 @@ const data = {
         {
           title: "JSON Formatter",
           url: "/tools/json-formatter",
+        },
+        {
+          title: "Markdown to JSON String",
+          url: "/tools/markdown-to-json",
         },
         {
           title: "Markdown Preview",
@@ -196,10 +201,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar {...props}>
       <SidebarHeader className="p-4">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <img 
-            src="https://cdn.ecwuuuuu.com/assets/img/ecwu.color.svg" 
-            alt="Logo" 
+          <Image
+            src="https://cdn.ecwuuuuu.com/assets/img/ecwu.color.svg"
+            alt="Logo"
             className="h-8 w-24"
+            width={96}
+            height={32}
           />
           <span className="font-semibold text-lg">Tools</span>
         </div>

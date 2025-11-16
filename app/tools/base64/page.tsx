@@ -19,7 +19,7 @@ export default function Base64Page() {
       } else {
         setOutput(atob(input));
       }
-    } catch (error) {
+    } catch {
       setOutput("Error: Invalid input for decoding");
     }
   };

@@ -3,7 +3,6 @@
 import { useState, useRef } from "react";
 import { AppNavbar } from "@/components/app-navbar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -13,9 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { Download, Copy } from "lucide-react";
 import QRCode from "qrcode";
+import Image from "next/image";
 
 export default function QRCodeGeneratorPage() {
   const [text, setText] = useState("");
@@ -146,10 +145,12 @@ export default function QRCodeGeneratorPage() {
                 <div className="space-y-2">
                   <Label>Generated QR Code</Label>
                   <div className="flex justify-center p-4 border rounded-lg bg-white">
-                    <img
+                    <Image
                       src={qrCodeUrl}
                       alt="Generated QR Code"
                       className="max-w-full h-auto"
+                      width={parseInt(size)}
+                      height={parseInt(size)}
                     />
                   </div>
                 </div>
